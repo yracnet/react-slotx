@@ -1,11 +1,12 @@
 {
-  "name": "react-slot",
+  "name": "react-slotx",
   "version": "0.1.0",
   "type": "module",
   "description": "Slot/Outlet system for React — register content anywhere, render it wherever you place an Outlet. Supports SPA and SSR.",
   "keywords": [
     "react",
     "slot",
+    "slotx",
     "outlet",
     "portal",
     "ssr",
@@ -19,7 +20,7 @@
   "author": "Willyams Yujra <yracnet@gmail.com>",
   "repository": {
     "type": "git",
-    "url": "https://github.com/yracnet/react-slot"
+    "url": "https://github.com/yracnet/react-slotx"
   },
   "exports": {
     ".": {
@@ -31,8 +32,8 @@
       "types": "./dist/server.d.ts"
     }
   },
-  "homepage": "https://github.com/yracnet/react-slot",
-  "bugs": "https://github.com/yracnet/react-slot/issues",
+  "homepage": "https://github.com/yracnet/react-slotx",
+  "bugs": "https://github.com/yracnet/react-slotx/issues",
   "scripts": {
     "build": "tsup",
     "prepublish": "tsup",
