@@ -9,14 +9,14 @@ export type HeadletType = {
 export type HeadletProps = Partial<HeadletType>
 
 export type SlotConf = {
-  mode: "priority" | "order";
+  mode: "priority" | "last" | "first" | "all";
 }
 export type SlotOpts = Partial<SlotConf>;
 
-export type SlotProps = { name: string } & SlotOpts
+export type SlotProps = { name: "*" | string } & SlotOpts
 
-export const asserSlotConf = (opts: SlotOpts): SlotConf => {
+export const asserSlotConf = ({ mode = "priority" }: SlotOpts): SlotConf => {
   return {
-    mode: "order"
+    mode
   }
 }

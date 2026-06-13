@@ -4,7 +4,7 @@ import type { SlotProps } from "./types.js";
 
 export const Outlet: FC<SlotProps> = ({ name = "default", ...opts }) => {
   const client = useSlotContext();
-  const data = client.outletSlot(name, opts);
+  const children = client.outletSlot(name, opts);
   const [, forceUpdate] = useState(0);
   useEffect(() => {
     return client.subscribe(() => {
@@ -13,8 +13,7 @@ export const Outlet: FC<SlotProps> = ({ name = "default", ...opts }) => {
   }, [client]);
   return (
     <>
-      <b>{data.name}:</b>
-      {data.children}
+      {children}
     </>
   );
 };

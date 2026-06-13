@@ -36,28 +36,32 @@ export class SlotClient {
       listener();
     }
   }
-
   outletSlot(name: string, opts: SlotOpts = {}) {
-    const config = asserSlotConf(opts);
-    return this.items2
+    const { mode } = asserSlotConf(opts);
+    const items = this.items2
       .values()
-      .filter((it) => it.name === name)
-      .reduce<HeadletType>(
-        (max, item) => {
-          return item.priority > max.priority ? item : max;
-        },
-        {
-          name: "default",
-          priority: -1,
-        },
-      );
+      .filter((it: HeadletType) => name === "*" || it.name === name)
+      .toArray();
+    switch (mode) {
+      case "all":
+        return items.map((it) => it.children);
+      case "priority":
+        return items.reduce<HeadletType | undefined>(
+          (best, it) => (!best || it.priority > best.priority ? it : best),
+          undefined,
+        )?.children;
+      case "last":
+        return items.at(-1)?.children;
+      default: // first
+        return items.at(0)?.children;
+    }
   }
 }
 
 export class SlotSSRClient extends SlotClient {
   ssr = true;
   renderToString(name: string, opts: SlotOpts = {}): string {
-    const item = this.outletSlot(name, opts);
-    return renderToString(<>{item.children}</>);
+    const children = this.outletSlot(name, opts);
+    return renderToString(<>{children}</>);
   }
 }

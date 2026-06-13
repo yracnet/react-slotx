@@ -9,6 +9,7 @@ export const renderSoe = () => {
       <Main />
     </SlotProvider>,
   );
-  const html = client.renderToString("head");
-  return [text, html];
+  const head = client.renderToString("head");
+  const script = client.renderToString("script");
+  return { text, head, script };
 };
