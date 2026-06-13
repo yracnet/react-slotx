@@ -1,6 +1,5 @@
 import { renderToString } from "react-dom/server";
 import {
-  type SlotProps,
   type HeadletType,
   type SlotOpts,
   asserSlotConf,
@@ -22,6 +21,14 @@ export class SlotClient {
   unregister(id: number) {
     this.items2.delete(id);
     this.notify();
+  }
+
+  update(id: number, partial: Partial<HeadletType>) {
+    const item = this.items2.get(id);
+    if (item) {
+      Object.assign(item, partial);
+      this.notify();
+    }
   }
 
   subscribe(listener: () => void) {
