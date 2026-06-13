@@ -11,8 +11,8 @@ export const Slot: FC<HeadletProps> = ({
   const client = useSlotContext();
   const idRef = useRef<number | null>(null);
 
-  if (client.ssr) {
-    client.register({ name, priority, children });
+  if (client.ssr && idRef.current === null) {
+    idRef.current = client.register({ name, priority, children });
   }
 
   useLayoutEffect(() => {

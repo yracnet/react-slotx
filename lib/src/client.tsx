@@ -4,26 +4,29 @@ import {
   assertSlotConf,
 } from "./types.js";
 
+type SlotSnapshot = HeadletType["children"] | Array<HeadletType["children"]>;
+
 export class SlotClient {
   ssr = false;
-  count2 = 0;
-  items2 = new Map<number, HeadletType>();
-  listeners = new Set<() => void>();
+  private count = 0;
+  private items = new Map<number, HeadletType>();
+  private listeners = new Set<() => void>();
+  private _cache = new Map<string, SlotSnapshot>();
 
   register(item: HeadletType): number {
-    const id = this.count2++;
-    this.items2.set(id, item);
+    const id = this.count++;
+    this.items.set(id, item);
     this.notify();
     return id;
   }
 
   unregister(id: number) {
-    this.items2.delete(id);
+    this.items.delete(id);
     this.notify();
   }
 
   update(id: number, partial: Partial<HeadletType>) {
-    const item = this.items2.get(id);
+    const item = this.items.get(id);
     if (item) {
       Object.assign(item, partial);
       this.notify();
@@ -38,28 +41,38 @@ export class SlotClient {
   }
 
   notify() {
+    this._cache.clear();
     for (const listener of this.listeners) {
       listener();
     }
   }
-  outletSlot(name: string, opts: SlotOpts = {}) {
+
+  outletSlot(name: string, opts: SlotOpts = {}): SlotSnapshot {
     const { mode } = assertSlotConf(opts);
-    const items = this.items2
+    const key = `${name}:${mode}`;
+    if (this._cache.has(key)) return this._cache.get(key);
+    const items = this.items
       .values()
       .filter((it: HeadletType) => name === "*" || it.name === name)
       .toArray();
+    let result: SlotSnapshot;
     switch (mode) {
       case "all":
-        return items.map((it) => it.children);
+        result = items.map((it) => it.children);
+        break;
       case "priority":
-        return items.reduce<HeadletType | undefined>(
-          (best, it) => (!best || it.priority > best.priority ? it : best),
+        result = items.reduce<HeadletType | undefined>(
+          (max, it) => (!max || it.priority > max.priority ? it : max),
           undefined,
         )?.children;
+        break;
       case "last":
-        return items.at(-1)?.children;
+        result = items.at(-1)?.children;
+        break;
       default: // first
-        return items.at(0)?.children;
+        result = items.at(0)?.children;
     }
+    this._cache.set(key, result);
+    return result;
   }
 }
