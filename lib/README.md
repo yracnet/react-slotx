@@ -1,11 +1,11 @@
-# react-slot
+# react-slotx
 
 Slot/Outlet system for React. Declare content anywhere in your tree with `<Slot>` and render it wherever you place an `<Outlet>`. Supports SPA and SSR.
 
 ## Installation
 
 ```bash
-npm install react-slot
+npm install react-slotx
 ```
 
 `react` ≥ 18 is a required peer dependency. `react-dom` is optional and only needed for SSR.
@@ -23,7 +23,7 @@ npm install react-slot
 ## SPA usage
 
 ```tsx
-import { SlotClient, SlotProvider, Slot, Outlet } from "react-slot";
+import { SlotClient, SlotProvider, Slot, Outlet } from "react-slotx";
 
 const client = new SlotClient();
 
@@ -68,8 +68,8 @@ export function App() {
 
 ```tsx
 import { renderToString } from "react-dom/server";
-import { SlotProvider } from "react-slot";
-import { SlotSSRClient } from "react-slot/server";
+import { SlotProvider } from "react-slotx";
+import { SlotSSRClient } from "react-slotx/server";
 
 export function renderPage() {
   const client = new SlotSSRClient();
@@ -140,7 +140,7 @@ const client = new SlotClient();
 ### `SlotSSRClient` — `react-slot/server`
 
 ```ts
-import { SlotSSRClient } from "react-slot/server";
+import { SlotSSRClient } from "react-slotx/server";
 
 const client = new SlotSSRClient();
 // after renderToString(...):
