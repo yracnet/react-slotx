@@ -1,14 +1,14 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { Main } from "./app";
-import { SoeClient, SoeProvider } from "../../lib/src";
+import { SlotClient, SlotProvider } from "../../lib/src";
 
-const client = new SoeClient();
+const client = new SlotClient();
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <SoeProvider client={client}>
+    <SlotProvider client={client}>
       <Main />
-    </SoeProvider>
+    </SlotProvider>
   </StrictMode>,
 );

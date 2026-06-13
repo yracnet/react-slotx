@@ -10,14 +10,12 @@ export const Slot: FC<HeadletProps> = ({
   const client = useSlotContext();
   if (client.ssr) {
     let id = client.register({ name, priority, children });
-    console.log("ATTACH SSR", name, id);
   }
   useEffect(() => {
     const id = client.register({ name, priority, children });
-    console.log("ATTACH", name, id);
     return () => {
       client.unregister(id);
     };
   }, [name, children, priority]);
-  return null;
+  return children;
 };

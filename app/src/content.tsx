@@ -1,49 +1,64 @@
 import { useState } from "react";
-import { Meta, SoeOutlet, Title } from "../../lib/src";
+import { Slot, Outlet } from "../../lib/src";
 
 export const Header = () => {
   return (
-    <header>
-      <p>HEADER</p>
-      <SoeOutlet />
-    </header>
-  );
-};
-
-const PreContent = ({title="HOLA PreContent !"}) => {
-  const [show, setShow] = useState(true);
-  return (
     <div>
-      PreContent
-      
-      <button onClick={e=>setShow(!show)}>OK {show? 'TRUE': 'FALSE'} - {title}</button>
-      {show && <Title value={title} />}
-      
+      <p>HEADER</p>
+      <Outlet name="head" />
+      <p>SCRIPT</p>
+      <Outlet name="script" />
     </div>
   );
 };
 
-const PostContent = () => {
+const AttachSlot = ({
+  name = "head",
+  title = "HOLA PreContent !",
+  priority = 1,
+}) => {
+  const [show, setShow] = useState(true);
+  const [value, setValue] = useState(title);
   return (
-    <main>
-      PostContent
-      <Title value="HOLA!!!!!!!!!!!!!!!" />
-    </main>
+    <table>
+      <tr>
+        <th colSpan={3}>{name}</th>
+      </tr>
+      <tr>
+        <td>Title:</td>
+        <td>
+          <input value={value} onChange={(e) => setValue(e.target.value)} />
+        </td>
+        <td>
+          <button onClick={() => setShow(!show)}>
+            {show ? "Ocultar" : "Mostrar"}
+          </button>
+        </td>
+        <td>
+          {show ? (
+            <Slot name={name} priority={priority}>
+              <b>
+                {name} - {value}
+              </b>
+            </Slot>
+          ) : (
+            "HIDEN"
+          )}
+        </td>
+      </tr>
+    </table>
   );
 };
 
 export const Content = () => {
-  const [value, setValue] = useState("");
   return (
     <main>
-      <input value={value} onChange={(e) => setValue(e.target.value)} />
-      {value}
-      <Meta property="seo:xxxx" content={value} />
-      <PreContent />
-      <p>CONTENT</p>
-      <PostContent />
-      <PreContent title="XXX1"/>
-      <PreContent title="OOOOOOOO1"/>
+      <p>HEAD</p>
+      <AttachSlot name="head" title="Title 1" priority={2} />
+      <AttachSlot name="head" title="Title 2" priority={3} />
+      <p>SCRIPT</p>
+      <AttachSlot name="script" title="Script 1" priority={2} />
+      <AttachSlot name="script" title="Script 2" priority={3} />
     </main>
   );
 };

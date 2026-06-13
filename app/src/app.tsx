@@ -1,5 +1,4 @@
-import { Content, Header } from "./content2";
-
+import { Content, Header } from "./content";
 
 export const Main = () => {
   return (

@@ -1,5 +1,10 @@
 import { renderToString } from "react-dom/server";
-import type { SlotProps, HeadletType } from "./types.js";
+import {
+  type SlotProps,
+  type HeadletType,
+  type SlotOpts,
+  asserSlotConf,
+} from "./types.js";
 
 export class SlotClient {
   ssr = false;
@@ -7,21 +12,11 @@ export class SlotClient {
   items2 = new Map<number, HeadletType>();
   listeners = new Set<() => void>();
 
-  register2(item: HeadletType): () => void {
+  register(item: HeadletType): number {
     const id = this.count2++;
     this.items2.set(id, item);
     this.notify();
-    return () => {
-      this.items2.delete(id);
-      this.notify();
-    };
-  }
-
-  register(item: HeadletType): number {
-    this.count2++;
-    this.items2.set(this.count2, item);
-    this.notify();
-    return this.count2;
+    return id;
   }
 
   unregister(id: number) {
@@ -42,29 +37,27 @@ export class SlotClient {
     }
   }
 
-  outlet({ name = "default", mode = "priority" }: SlotProps) {
-    return this.items2.values().reduce<HeadletType>(
-      (max, item) => {
-        return item.priority > max.priority ? item : max;
-      },
-      {
-        name: "default",
-        priority: -1,
-      },
-    );
+  outletSlot(name: string, opts: SlotOpts = {}) {
+    const config = asserSlotConf(opts);
+    return this.items2
+      .values()
+      .filter((it) => it.name === name)
+      .reduce<HeadletType>(
+        (max, item) => {
+          return item.priority > max.priority ? item : max;
+        },
+        {
+          name: "default",
+          priority: -1,
+        },
+      );
   }
 }
 
 export class SlotSSRClient extends SlotClient {
   ssr = true;
-  asHmlString(props: SlotProps): string {
-    const show = this.outlet(props);
-    console.log(">asHmlString>>>", show.name);
-    return renderToString(
-      <>
-        <h1>{show.name}</h1>
-        {show.children}
-      </>,
-    );
+  renderToString(name: string, opts: SlotOpts = {}): string {
+    const item = this.outletSlot(name, opts);
+    return renderToString(<>{item.children}</>);
   }
 }
