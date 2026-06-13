@@ -1,4 +1,4 @@
-import React, { createContext, useContext } from "react";
+import React, { createContext, useContext, useRef } from "react";
 import { SlotClient } from "./client.js";
 
 export const SlotContext = createContext<SlotClient | null>(null);
@@ -10,14 +10,16 @@ export const SlotProvider = ({
   client?: SlotClient;
   children: React.ReactNode;
 }) => {
-  if (!client) {
-    client = new SlotClient();
+  const internalRef = useRef<SlotClient>(null);
+  if (!client && !internalRef.current) {
+    internalRef.current = new SlotClient();
   }
-  return <SlotContext.Provider value={client}>{children}</SlotContext.Provider>;
+  const value = client ?? internalRef.current;
+  return <SlotContext.Provider value={value}>{children}</SlotContext.Provider>;
 };
 
 export const useSlotContext = (): SlotClient => {
   const value = useContext(SlotContext);
-  if (!value) throw new Error("useSlotContext requires SlotContext");
+  if (!value) throw new Error("useSlotContext requires SlotProvider");
   return value;
 };
