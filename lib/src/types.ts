@@ -6,7 +6,7 @@ export type HeadletType = {
   children?: ReactNode;
 };
 
-export type HeadletProps = Partial<HeadletType>
+export type HeadletProps = Partial<HeadletType> & { dangerouslyEnableRender?: boolean }
 
 export type SlotConf = {
   mode: "priority" | "last" | "first" | "all";

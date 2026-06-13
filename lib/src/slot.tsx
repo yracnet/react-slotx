@@ -1,4 +1,4 @@
-import { type FC, useEffect, useRef } from "react";
+import { type FC, useEffect, useLayoutEffect, useRef } from "react";
 import { useSlotContext } from "./context.js";
 import type { HeadletProps } from "./types.js";
 
@@ -6,6 +6,7 @@ export const Slot: FC<HeadletProps> = ({
   name = "default",
   priority = 1,
   children,
+  dangerouslyEnableRender,
 }) => {
   const client = useSlotContext();
   const idRef = useRef<number | null>(null);
@@ -14,7 +15,7 @@ export const Slot: FC<HeadletProps> = ({
     client.register({ name, priority, children });
   }
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     idRef.current = client.register({ name, priority, children });
     return () => {
       if (idRef.current !== null) {
@@ -30,5 +31,5 @@ export const Slot: FC<HeadletProps> = ({
     }
   }, [children, client]);
 
-  return children;
+  return dangerouslyEnableRender ? children : null;
 };
