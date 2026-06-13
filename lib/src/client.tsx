@@ -51,10 +51,9 @@ export class SlotClient {
     const { mode } = assertSlotConf(opts);
     const key = `${name}:${mode}`;
     if (this._cache.has(key)) return this._cache.get(key);
-    const items = this.items
-      .values()
-      .filter((it: HeadletType) => name === "*" || it.name === name)
-      .toArray();
+    const items = Array.from(this.items.values()).filter(
+      (it: HeadletType) => name === "*" || it.name === name,
+    );
     let result: SlotSnapshot;
     switch (mode) {
       case "all":
