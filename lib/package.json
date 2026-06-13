@@ -1,13 +1,46 @@
 {
   "name": "react-slot",
-  "version": "1.0.0",
-  "license": "MIT",
+  "version": "0.1.0",
   "type": "module",
+  "description": "Slot/Outlet system for React — register content anywhere, render it wherever you place an Outlet. Supports SPA and SSR.",
+  "keywords": [
+    "react",
+    "slot",
+    "outlet",
+    "portal",
+    "ssr",
+    "headless"
+  ],
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "license": "MIT",
+  "author": "Willyams Yujra <yracnet@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yracnet/react-slot"
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./server": {
+      "import": "./dist/server.js",
+      "types": "./dist/server.d.ts"
+    }
+  },
+  "homepage": "https://github.com/yracnet/react-slot",
+  "bugs": "https://github.com/yracnet/react-slot/issues",
   "scripts": {
-    "build": "tsup"
+    "build": "tsup",
+    "prepublish": "tsup",
+    "prepack": "tsup"
   },
   "peerDependencies": {
-    "react": ">=18"
+    "react": ">=18",
+    "react-dom": ">=18"
   },
   "devDependencies": {
     "@types/node": "^25.9.3",
