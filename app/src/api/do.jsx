@@ -1,21 +1,15 @@
 import React from "react";
 import { renderToString } from "react-dom/server";
-
 import { SoeProvider, SoeSSRClient } from "../../../lib/src";
-import { Content } from "../content";
-import { Header } from "../content";
+import { Main } from "../app";
 
 export const renderSoe = () => {
-  const client = new SoeSSRClient();
+  const client = new SoeSSRClient();  
   const text = renderToString(
     <SoeProvider client={client}>
-      <div>
-        <Header />
-        <Content />
-      </div>
+      <Main/>
     </SoeProvider>,
   );
-
-  const html = client.toString();
+  const html = client.asHmlString();
   return [text, html];
 };

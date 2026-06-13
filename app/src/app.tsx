@@ -1,16 +1,11 @@
-import { SoeClient, SoeProvider } from "../../lib/src";
-import { Content, Header } from "./content";
+import { Content, Header } from "./content2";
 
-
-const client = new SoeClient();
 
 export const Main = () => {
   return (
-    <SoeProvider client={client}>
       <div>
         <Header />
         <Content />
       </div>
-    </SoeProvider>
   );
 };
