@@ -1,8 +1,7 @@
-import { renderToString } from "react-dom/server";
 import {
   type HeadletType,
   type SlotOpts,
-  asserSlotConf,
+  assertSlotConf,
 } from "./types.js";
 
 export class SlotClient {
@@ -44,7 +43,7 @@ export class SlotClient {
     }
   }
   outletSlot(name: string, opts: SlotOpts = {}) {
-    const { mode } = asserSlotConf(opts);
+    const { mode } = assertSlotConf(opts);
     const items = this.items2
       .values()
       .filter((it: HeadletType) => name === "*" || it.name === name)
@@ -62,13 +61,5 @@ export class SlotClient {
       default: // first
         return items.at(0)?.children;
     }
-  }
-}
-
-export class SlotSSRClient extends SlotClient {
-  ssr = true;
-  renderToString(name: string, opts: SlotOpts = {}): string {
-    const children = this.outletSlot(name, opts);
-    return renderToString(<>{children}</>);
   }
 }

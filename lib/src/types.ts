@@ -15,7 +15,7 @@ export type SlotOpts = Partial<SlotConf>;
 
 export type SlotProps = { name: "*" | string } & SlotOpts
 
-export const asserSlotConf = ({ mode = "priority" }: SlotOpts): SlotConf => {
+export const assertSlotConf = ({ mode = "priority" }: SlotOpts): SlotConf => {
   return {
     mode
   }

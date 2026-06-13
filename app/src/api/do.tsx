@@ -1,5 +1,6 @@
 import { renderToString } from "react-dom/server";
-import { SlotProvider, SlotSSRClient } from "../../../lib/src";
+import { SlotProvider } from "../../../lib/src";
+import { SlotSSRClient } from "../../../lib/src/server";
 import { Main } from "../app";
 
 export const renderSoe = () => {
