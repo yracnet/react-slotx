@@ -148,6 +148,19 @@ const html: string = client.renderToString("slot-name");
 const html: string = client.renderToString("slot-name", { mode: "all" });
 ```
 
+
+## Resources
+
+Git Repository https://github.com/yracnet/react-slotx/
+
+SPA Example https://github.com/yracnet/react-slotx/tree/main/examples/my-spa-app
+
+SSR Example https://github.com/yracnet/react-slotx/tree/main/examples/my-ssr-app
+
+Package https://www.npmjs.com/package/react-slotx
+
+Tutorial https://dev.to/yracnet/react-slotx-4khe
+
 ## License
 
 MIT

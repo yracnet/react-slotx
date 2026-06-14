@@ -410,6 +410,16 @@ client.renderToString("head", { mode: "all" });
 
 ---
 
+## Resources
+
+Git Repository https://github.com/yracnet/react-slotx/
+
+SPA Example https://github.com/yracnet/react-slotx/tree/main/examples/my-spa-app
+
+SSR Example https://github.com/yracnet/react-slotx/tree/main/examples/my-ssr-app
+
+Package https://www.npmjs.com/package/react-slotx
+
 ## License
 
 MIT
