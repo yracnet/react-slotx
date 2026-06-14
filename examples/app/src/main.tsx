@@ -1,6 +1,6 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import { SlotClient, SlotProvider } from "../../lib/src";
+import { SlotClient, SlotProvider } from "react-slotx";
 import { Example } from "./example";
 
 const client = new SlotClient();

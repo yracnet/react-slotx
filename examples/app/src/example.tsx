@@ -1,5 +1,5 @@
 import { useState, type FC } from "react";
-import { Slot, Outlet } from "../../lib/src";
+import { Slot, Outlet } from "react-slotx";
 import {
   Badge,
   Card,

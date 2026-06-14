@@ -3,11 +3,8 @@
   "version": "1.0.0",
   "private": true,
   "license": "MIT",
-  "scripts": {
-    "sync-docs": "node ./scripts/sync-docs.js"
-  },
   "workspaces": [
-    "lib",
-    "app"
+    "slotx",
+    "examples/*"
   ]
 }
