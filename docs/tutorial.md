@@ -29,7 +29,7 @@ Think of it like a two-way pipe:
 ## Installation
 
 ```bash
-npm install react-slotx
+yarn add react-slotx
 ```
 
 Requirements:
@@ -45,13 +45,34 @@ This section shows the **automatic** way to use react-slotx inside a plain Vite 
 ### Step 1 — Create a new Vite project
 
 ```bash
-npm create vite@latest my-app -- --template react-ts
-cd my-app
-npm install
-npm install react-slotx
+yarn create vite my-spa-app --template react-ts
+cd my-spa-app
+yarn install
+yarn add react-slotx
 ```
 
-### Step 2 — Create the SlotClient (once, at the app root)
+### Step 2 — Clean up unused Vite template files
+
+The Vite template generates files that are not needed for this tutorial. Remove them to keep the project clean:
+
+#### Linux
+```bash
+rm -rf src/*
+touch src/main.tsx
+touch src/App.tsx
+touch src/Layout.tsx
+touch src/HomePage.tsx
+```
+#### Windows
+```bash
+Remove-Item src\* -Force
+New-Item src\main.tsx -ItemType File -Force
+New-Item src\App.tsx -ItemType File -Force
+New-Item src\Layout.tsx -ItemType File -Force
+New-Item src\HomePage.tsx -ItemType File -Force
+```
+
+### Step 3 — Create the SlotClient (once, at the app root)
 
 `SlotClient` is the shared store that connects every `<Slot>` with its matching `<Outlet>`. You create it **once** and pass it to `<SlotProvider>`.
 
@@ -78,7 +99,7 @@ createRoot(document.getElementById("root")!).render(
 > **Why wrap the whole app?**  
 > `SlotProvider` makes the `client` available to every component in the tree. Without it, `<Slot>` and `<Outlet>` cannot talk to each other.
 
-### Step 3 — Create a Layout with an Outlet
+### Step 4 — Create a Layout with an Outlet
 
 The **Layout** is the shell of your page. It defines *where* content will appear using `<Outlet>`.
 
@@ -103,7 +124,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 ```
 
-### Step 4 — Register content with Slot inside a Page
+### Step 5 — Register content with Slot inside a Page
 
 A **Page** component registers the title it wants to show, using `<Slot>`. It does not need to know where the title will actually appear.
 
@@ -126,7 +147,7 @@ export function HomePage() {
 }
 ```
 
-### Step 5 — Wire everything together in App
+### Step 6 — Wire everything together in App
 
 Edit `src/App.tsx`:
 
@@ -143,10 +164,10 @@ export function App() {
 }
 ```
 
-### Step 6 — Run the app
+### Step 7 — Run the app
 
 ```bash
-npm run dev
+yarn dev
 ```
 
 Open `http://localhost:5173`. You will see `"Welcome to the Home Page"` rendered inside the `<header>`, even though it was declared inside `<HomePage>`.
@@ -210,18 +231,21 @@ Server-Side Rendering means the HTML is built on the server **before** it reache
 ```bash
 mkdir my-ssr-app
 cd my-ssr-app
-npm init -y
-npm install express react react-dom react-slotx
-npm install -D typescript @types/react @types/react-dom @types/express tsx
+yarn init -y
+yarn add express react react-dom react-slotx
+yarn add -D tsx
 ```
+
+> **Why `tsx`?** `tsx` is a lightweight Node.js enhancer that understands JSX files (`.jsx`) with no TypeScript required. It replaces the need for a full TypeScript + Babel setup.
 
 ### Step 2 — Create your React component
 
 This component uses `<Slot>` exactly as in SPA mode. The component itself does not care whether it is rendered on the client or the server.
 
-Create `src/Page.tsx`:
+Create `src/Page.jsx`:
 
-```tsx
+```jsx
+import React from "react";
 import { Slot } from "react-slotx";
 
 export function Page() {
@@ -244,15 +268,16 @@ export function Page() {
 
 This is the key difference from SPA mode. On the server you use **`SlotSSRClient`** instead of `SlotClient`, and after `renderToString` you call `client.renderToString("slot-name")` to extract the HTML registered in each slot.
 
-Create `src/render.tsx`:
+Create `src/render.jsx`:
 
-```tsx
+```jsx
+import React from "react";
 import { renderToString } from "react-dom/server";
 import { SlotProvider } from "react-slotx";
 import { SlotSSRClient } from "react-slotx/server";
-import { Page } from "./Page";
+import { Page } from "./Page.jsx";
 
-export function renderPage(): string {
+export function renderPage() {
   // 1. Create a fresh client for every request
   const client = new SlotSSRClient();
 
@@ -286,11 +311,11 @@ export function renderPage(): string {
 
 ### Step 4 — Create the Express server
 
-Create `src/server.ts`:
+Create `src/server.js`:
 
-```ts
+```js
 import express from "express";
-import { renderPage } from "./render";
+import { renderPage } from "./render.jsx";
 
 const app = express();
 
@@ -309,7 +334,7 @@ app.listen(3000, () => {
 ### Step 5 — Run the server
 
 ```bash
-npx tsx src/server.ts
+npx tsx src/server.js
 ```
 
 Open `http://localhost:3000`. You will receive a fully rendered HTML page with:
@@ -332,7 +357,7 @@ Open `http://localhost:3000`. You will receive a fully rendered HTML page with:
 
 You can have as many named slots as you need:
 
-```tsx
+```jsx
 // In your component
 <Slot name="head">
   <title>My Page</title>
@@ -343,7 +368,7 @@ You can have as many named slots as you need:
 </Slot>
 ```
 
-```tsx
+```js
 // In your render function
 const headHtml    = client.renderToString("head");
 const scriptsHtml = client.renderToString("scripts");
@@ -362,7 +387,7 @@ return `<!doctype html>
 
 `renderToString` on the client accepts the same `mode` option as the `<Outlet>` `mode` prop:
 
-```ts
+```js
 // Only the highest-priority slot (default)
 client.renderToString("head", { mode: "priority" });
 
@@ -376,7 +401,7 @@ client.renderToString("head", { mode: "all" });
 
 | | SPA | SSR |
 |---|---|---|
-| Install | `react-slotx` | `react-slotx` + `react-dom` |
+| Install | `yarn add react-slotx` | `yarn add react-slotx react-dom` |
 | Client class | `SlotClient` | `SlotSSRClient` (from `react-slotx/server`) |
 | Import | `import { SlotClient } from "react-slotx"` | `import { SlotSSRClient } from "react-slotx/server"` |
 | Client lifetime | Once, module-level | Once **per request** |

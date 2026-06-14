@@ -1,0 +1,15 @@
+{
+  "name": "my-ssr-app",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^5.2.1",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7",
+    "react-slotx": "^0.1.0"
+  },
+  "devDependencies": {
+    "tsx": "^4.22.4"
+  }
+}
